@@ -40,14 +40,17 @@ def add_calucated_quantitles(df):
     df['LabelX'] = np.vectorize(add_label)(df['Name'], df['Spring_rate'])
 
 # Title
-st.markdown("<h1 style='font-size: 54px;'>Setup analyzer: Uncover your ideal configuration</h1>", unsafe_allow_html=True)
+st.markdown("<h1 style='font-size: 54px;'>Setup analyzer</h1>", unsafe_allow_html=True)
+st.markdown("<h1 style='font-size: 44px;'>Uncover your ideal configuration</h1>", unsafe_allow_html=True)
 # Description
+st.write("\n")
 st.markdown("""
 <sub style='font-size: 16px;'>
-To use: enter your details on the left and change the spring rate until you find an appropriate spring for your mountain bike, travel and weight.
+Enter your details on the left and change the spring rate until you find an appropriate spring for your mountain bike, travel and weight.
 </sub>
 """, unsafe_allow_html=True)
 # Credit
+st.write("\n")
 st.write("\n")
 st.markdown("""
 <sub style='font-size: 16px;'>
@@ -63,7 +66,7 @@ st.write("\n")
 st.title("Coil Spring Rate Comparisons")
 st.write("\n")
 st.sidebar.markdown("### Setup Analyzer")
-st.sidebar.markdown("To use: enter your details on the left...")
+st.sidebar.markdown("Enter your details...")
 
 user_discipline = st.sidebar.selectbox("Discipline", ['Enduro', 'DH'])
 user_stroke = st.sidebar.slider("Rear shock stroke (mm)", 20.0, 100.0, 63.0, 0.5)  # All values are floats
@@ -140,7 +143,7 @@ charts = (points + points_user + reg + labels).properties(width="container").int
 
 
 # Make the chart
-huck_height_chart = alt.Chart(df, title='Huck_height_(m) ').mark_circle().encode(
+huck_height_chart = alt.Chart(df, title='Huck_height_(m) vs Bike Max Travel').mark_circle().encode(
     alt.X('Travel:Q').scale(zero=False),
     alt.Y('Huck_height_(m):Q').scale(zero=False),
     color=alt.Color('Discipline:N', scale=alt.Scale(domain=['Enduro', 'DH', 'Entered data', 'best fit line'], range=['blue', 'green', 'red', 'purple'])),
@@ -150,7 +153,7 @@ huck_height_chart = alt.Chart(df, title='Huck_height_(m) ').mark_circle().encode
     width="container"
 )
 
-huck_height_chart_user = alt.Chart(df_user, title='Huck_height_(m) ').mark_circle().encode(
+huck_height_chart_user = alt.Chart(df_user, title='Huck_height_(m) vs Bike Max Travel').mark_circle().encode(
     alt.X('Travel:Q').scale(zero=False),
     alt.Y('Huck_height_(m):Q').scale(zero=False),
     color=alt.Color('Discipline:N', scale=alt.Scale(domain=['Enduro', 'DH', 'Entered data', 'best fit line'], range=['blue', 'green', 'red', 'purple'])),
@@ -191,6 +194,9 @@ st.altair_chart(charts2)
 
 st.markdown("""
 ### Definitions:
+            
+- **Spring_rate_at_wheel_normalised_75kg:**
+    This metric adjusts the spring rate of different setups to make them comparable as if a 75kg rider were using them. By standardizing the setups to a 75kg rider, you can easily compare the stiffness across different rider weights. For instance, if a 90kg rider uses a 500lbs/in spring, this would feel roughly the same as a 75kg rider using a 516lbs/in spring.            
 
 - **Huck_height:**  
     Huck_height is the height you could drop rider and bike from and all energy be contained in the spring without bottoming out (assumes 60% of weight on rear wheel)
