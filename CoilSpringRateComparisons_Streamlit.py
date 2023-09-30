@@ -29,6 +29,7 @@ def huck_height(energy_at_max_travel, weight):
 
 def add_label(name, spring):
     return name + " " + str(spring) + "lbs/in"
+
     
 def add_calucated_quantitles(df):
     df['Motion_ratio'] = motion_ratio(df['Travel'], df['Stroke'])
@@ -37,8 +38,6 @@ def add_calucated_quantitles(df):
     df['Energy_at_max_travel'] = energy_at_max_travel(df['Spring_rate'], df['Stroke'])
     df['Huck_height_(m)'] = huck_height(df['Energy_at_max_travel'], df['Weight'])
     df['LabelX'] = np.vectorize(add_label)(df['Name'], df['Spring_rate'])
-    
-
 
 # Title
 st.markdown("<h1 style='font-size: 54px;'>Setup analyzer: Uncover your ideal configuration</h1>", unsafe_allow_html=True)
@@ -81,7 +80,7 @@ df = df.reset_index()
 
 
 data = {
-    'Discipline': ['Entered Data'],
+    'Discipline': ['Entered data'],
     'Name': [user_name],
     'Stroke': [user_stroke],
     'Travel': [user_travel],
@@ -103,14 +102,14 @@ df_combined = pd.concat([df, df_user])
 points = alt.Chart(df, title='Normalised Rider Weight Spring Rate vs Bike Max Travel').mark_circle().encode(
     alt.X('Travel:Q',axis=alt.Axis(title ='Travel_')).scale(zero=False),
     alt.Y('Spring_rate_at_wheel_normalised_75kg:Q', axis=alt.Axis(title ='Spring_rate_at_wheel_normalised_75kg_')).scale(zero=False),
-    color=alt.Color('Discipline:N', scale=alt.Scale(domain=['Enduro', 'DH', 'Entered Data', 'best fit line'], range=['blue', 'green', 'red', 'orange'])),
+    color=alt.Color('Discipline:N', scale=alt.Scale(domain=['Enduro', 'DH', 'Entered data', 'best fit line'], range=['blue', 'green', 'red', 'purple'])),
     size='Speed_rating:Q',
     tooltip=['Name', 'Weight', 'Spring_rate', 'Speed_rating', 'Discipline'],
 )
 points_user = alt.Chart(df_user, title='Normalised Rider Weight Spring Rate vs Bike Max Travel').mark_circle().encode(
     alt.X('Travel:Q',axis=alt.Axis(title ='Travel_')).scale(zero=False),
     alt.Y('Spring_rate_at_wheel_normalised_75kg:Q', axis=alt.Axis(title ='Spring_rate_at_wheel_normalised_75kg_')).scale(zero=False),
-    color=alt.Color('Discipline:N', scale=alt.Scale(domain=['Enduro', 'DH', 'Entered Data', 'best fit line'], range=['blue', 'green', 'red', 'orange'])),
+    color=alt.Color('Discipline:N', scale=alt.Scale(domain=['Enduro', 'DH', 'Entered data', 'best fit line'], range=['blue', 'green', 'red', 'purple'])),
     tooltip=['Name', 'Weight', 'Spring_rate', 'Speed_rating', 'Discipline'],
     size=alt.value(200)
 )
@@ -122,7 +121,7 @@ labels =  alt.Chart(df_combined).mark_text(align='left', baseline='middle', dx=4
 reg = alt.Chart(df).mark_circle().encode(
     alt.X('Travel:Q',axis=alt.Axis(title ='Travel_')).scale(zero=False),
     alt.Y('Spring_rate_at_wheel_normalised_75kg:Q', axis=alt.Axis(title ='Spring_rate_at_wheel_normalised_75kg_')).scale(zero=False),
-    color=alt.Color('Discipline:N', scale=alt.Scale(domain=['Enduro', 'DH', 'Entered Data', 'best fit line'], range=['blue', 'green', 'red', 'orange'])),
+    color=alt.Color('Discipline:N', scale=alt.Scale(domain=['Enduro', 'DH', 'Entered data', 'best fit line'], range=['blue', 'green', 'red', 'purple'])),
     size='Speed_rating:Q',
     tooltip=['Name', 'Weight', 'Spring_rate', 'Speed_rating', 'Discipline']
 ).transform_regression('Travel', 'Spring_rate_at_wheel_normalised_75kg').mark_line(
@@ -144,7 +143,7 @@ charts = (points + points_user + reg + labels).properties(width="container").int
 huck_height_chart = alt.Chart(df, title='Huck_height_(m) ').mark_circle().encode(
     alt.X('Travel:Q').scale(zero=False),
     alt.Y('Huck_height_(m):Q').scale(zero=False),
-    color=alt.Color('Discipline:N', scale=alt.Scale(domain=['Enduro', 'DH', 'Entered Data', 'best fit line'], range=['blue', 'green', 'red', 'orange'])),
+    color=alt.Color('Discipline:N', scale=alt.Scale(domain=['Enduro', 'DH', 'Entered data', 'best fit line'], range=['blue', 'green', 'red', 'purple'])),
     size='Speed_rating:Q',
     tooltip=['Name', 'Weight', 'Spring_rate', 'Speed_rating', 'Discipline']
 ).properties(
@@ -154,8 +153,8 @@ huck_height_chart = alt.Chart(df, title='Huck_height_(m) ').mark_circle().encode
 huck_height_chart_user = alt.Chart(df_user, title='Huck_height_(m) ').mark_circle().encode(
     alt.X('Travel:Q').scale(zero=False),
     alt.Y('Huck_height_(m):Q').scale(zero=False),
-    color=alt.Color('Discipline:N', scale=alt.Scale(domain=['Enduro', 'DH', 'Entered Data', 'best fit line'], range=['blue', 'green', 'red', 'orange'])),
-    size='Speed_rating:Q',
+    color=alt.Color('Discipline:N', scale=alt.Scale(domain=['Enduro', 'DH', 'Entered data', 'best fit line'], range=['blue', 'green', 'red', 'purple'])),
+    size=alt.value(200),
     tooltip=['Name', 'Weight', 'Spring_rate', 'Speed_rating', 'Discipline'],
 ).properties(
     width="container"
@@ -168,7 +167,7 @@ labels_h =  alt.Chart(df_combined).mark_text(align='left', baseline='middle', dx
 reg_h = alt.Chart(df).mark_circle().encode(
     alt.X('Travel:Q',axis=alt.Axis(title ='Travel_')).scale(zero=False),
     alt.Y('Huck_height_(m):Q', axis=alt.Axis(title ='Huck_height_(m)')).scale(zero=False),
-    color=alt.Color('Discipline:N', scale=alt.Scale(domain=['Enduro', 'DH', 'Entered Data', 'best fit line'], range=['blue', 'green', 'red', 'orange'])),
+    color=alt.Color('Discipline:N', scale=alt.Scale(domain=['Enduro', 'DH', 'Entered data', 'best fit line'], range=['blue', 'green', 'red', 'purple'])),
     tooltip=['Name', 'Weight', 'Spring_rate', 'Speed_rating', 'Discipline']
 ).transform_regression('Travel', 'Huck_height_(m)').mark_line(
      opacity=0.50, 
