@@ -18,7 +18,7 @@ def motion_ratio(travel, stroke):
 def spring_rate_at_wheel(spring, motion_ratio):
     return spring/(motion_ratio**2)
 
-def spring_rate_at_wheel_normlaised_75kg(spring_rate_at_wheel, weight):
+def spring_rate_at_wheel_normalised_75kg(spring_rate_at_wheel, weight):
     return spring_rate_at_wheel*75/weight
 
 def energy_at_max_travel(spring_rate, shock_stroke):
@@ -33,7 +33,7 @@ def add_label(name, spring):
 def add_calucated_quantitles(df):
     df['Motion_ratio'] = motion_ratio(df['Travel'], df['Stroke'])
     df['Spring_rate_at_wheel'] = spring_rate_at_wheel(df['Spring_rate'],df['Motion_ratio'])
-    df['Spring_rate_at_wheel_normalised_75kg'] = spring_rate_at_wheel_normlaised_75kg(df['Spring_rate_at_wheel'],df['Weight'])
+    df['Spring_rate_at_wheel_normalised_75kg'] = spring_rate_at_wheel_normalised_75kg(df['Spring_rate_at_wheel'],df['Weight'])
     df['Energy_at_max_travel'] = energy_at_max_travel(df['Spring_rate'], df['Stroke'])
     df['Huck_height_(m)'] = huck_height(df['Energy_at_max_travel'], df['Weight'])
     df['LabelX'] = np.vectorize(add_label)(df['Name'], df['Spring_rate'])
@@ -42,7 +42,7 @@ def add_calucated_quantitles(df):
 
 # Title
 st.markdown("<h1 style='font-size: 54px;'>Setup analyzer</h1>", unsafe_allow_html=True)
-st.markdown("<h1 style='font-size: 54px;'>Uncover your ideal configuration</h1>", unsafe_allow_html=True)
+st.markdown("<h1 style='font-size: 40px;'>Uncover your ideal configuration</h1>", unsafe_allow_html=True)
 # Description
 st.markdown("""
 <sub style='font-size: 16px;'>
@@ -74,9 +74,8 @@ user_weight = st.sidebar.slider("Rider weight (Kg)", 20.0, 200.0, 80.0, 1.0)  # 
 user_spring_rate = st.sidebar.slider("Spring_rate lbs/in", 200.0, 800.0, 434.0, 5.0)  # All values are floats
 user_speed_rating = st.sidebar.slider("Rider speed, Mens WCDH = 10", 1.0, 10.0, 5.0, 1.0)  # All values are floats
 user_name = st.sidebar.text_input("Name", "Jane Doe")
-# Data Preparation and Calculation
-# Your data reading and calculations here...
 
+# Data Preparation and Calculation
 df = pd.read_csv("Data.csv", index_col=1)
 df = df.reset_index()
 
@@ -97,11 +96,6 @@ add_calucated_quantitles(df_user)
 df_user['plot_point_size'] = 3
 df['plot_point_size'] = 2
 df_combined = pd.concat([df, df_user])
-# Assume df contains your original data
-# df_combined = pd.concat([df, df_user])
-# Your chart plotting...
-
-
 
 
 # Make the chart
@@ -194,6 +188,11 @@ st.altair_chart(charts2)
 
 st.markdown("""
 ### Definitions:
+
+- **Spring_rate_at_wheel_normalised_75kg:**  
+    This metric adjusts the spring rate of different setups to make them comparable as if a 75kg rider were using them. 
+    By standardizing the setups to a 75kg rider, you can easily compare the stiffness across different rider weights. 
+    For instance, if a 90kg rider uses a 500lbs/in spring, this would feel similar to a 75kg rider using a 416lbs/in spring.
 
 - **Huck_height:**  
     Huck_height is the height you could drop rider and bike from and all energy be contained in the spring without bottoming out (assumes 60% of weight on rear wheel)
