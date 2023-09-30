@@ -81,7 +81,7 @@ df = df.reset_index()
 
 
 data = {
-    'Discipline': ['Entered data'],
+    'Discipline': ['Entered Data'],
     'Name': [user_name],
     'Stroke': [user_stroke],
     'Travel': [user_travel],
