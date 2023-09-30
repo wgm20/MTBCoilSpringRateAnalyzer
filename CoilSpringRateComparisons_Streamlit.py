@@ -41,11 +41,12 @@ def add_calucated_quantitles(df):
 
 
 # Title
-st.markdown("<h1 style='font-size: 54px;'>Setup analyzer: Uncover your ideal configuration</h1>", unsafe_allow_html=True)
+st.markdown("<h1 style='font-size: 54px;'>Setup analyzer</h1>", unsafe_allow_html=True)
+st.markdown("<h1 style='font-size: 54px;'>Uncover your ideal configuration</h1>", unsafe_allow_html=True)
 # Description
 st.markdown("""
 <sub style='font-size: 16px;'>
-To use: enter your details on the left and change the spring rate until you find an appropriate spring for your mountain bike, travel and weight.
+Enter your details on the left and change the spring rate until you find an appropriate spring for your mountain bike, travel and weight.
 </sub>
 """, unsafe_allow_html=True)
 # Credit
@@ -64,7 +65,7 @@ st.write("\n")
 st.title("Coil Spring Rate Comparisons")
 st.write("\n")
 st.sidebar.markdown("### Setup Analyzer")
-st.sidebar.markdown("To use: enter your details on the left...")
+st.sidebar.markdown("Enter your details...")
 
 user_discipline = st.sidebar.selectbox("Discipline", ['Enduro', 'DH'])
 user_stroke = st.sidebar.slider("Rear shock stroke (mm)", 20.0, 100.0, 63.0, 0.5)  # All values are floats
