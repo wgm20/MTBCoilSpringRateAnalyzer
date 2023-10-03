@@ -8,7 +8,6 @@ from time import time
 from datetime import timedelta
 import warnings
 import altair as alt
-
 import streamlit as st
 
 #functions
@@ -38,6 +37,7 @@ def add_calucated_quantitles(df):
     df['Energy_at_max_travel'] = energy_at_max_travel(df['Spring_rate'], df['Stroke'])
     df['Huck_height_(m)'] = huck_height(df['Energy_at_max_travel'], df['Weight'])
     df['LabelX'] = np.vectorize(add_label)(df['Name'], df['Spring_rate'])
+
 
 # Title
 st.markdown("<h1 style='font-size: 54px;'>Setup analyzer</h1>", unsafe_allow_html=True)
@@ -189,8 +189,6 @@ charts2 = (huck_height_chart + huck_height_chart_user + reg_h + labels_h).intera
 # Display the chart in the Streamlit app
 st.altair_chart(charts)
 st.altair_chart(charts2)
-
-
 
 st.markdown("""
 ### Definitions:
