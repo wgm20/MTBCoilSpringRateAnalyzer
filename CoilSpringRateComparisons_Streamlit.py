@@ -39,9 +39,11 @@ def add_calucated_quantitles(df):
     df['LabelX'] = np.vectorize(add_label)(df['Name'], df['Spring_rate'])
 
 
+
 # Title
-st.markdown("<h1 style='font-size: 54px;'>Setup analyzer</h1>", unsafe_allow_html=True)
-st.markdown("<h1 style='font-size: 44px;'>Uncover your ideal configuration</h1>", unsafe_allow_html=True)
+st.markdown("<h1 style='font-size: 60px; font-family: Helvetica; font-weight: bold; margin-bottom: 0;'>Setup Analyzer</h1>", unsafe_allow_html=True)
+st.markdown("<h2 style='font-size: 36px; font-family: Helvetica; margin-top: 0;'>Uncover your ideal configuration</h2>", unsafe_allow_html=True)
+
 # Description
 st.write("\n")
 st.markdown("""
@@ -63,7 +65,7 @@ st.write("\n")
 st.write("\n")
 
 # User Inputs
-st.title("Coil Spring Rate Comparisons")
+#st.title("Coil Spring Rate Comparisons")
 st.write("\n")
 st.sidebar.markdown("### Setup Analyzer")
 st.sidebar.markdown("Enter your details...")
@@ -139,6 +141,8 @@ reg = alt.Chart(df).mark_circle().encode(
 charts = (points + points_user + reg + labels).properties(width="container").interactive().properties(
     width=1000,
     height=600
+).configure_title(
+    fontSize=24
 )
 
 
@@ -183,6 +187,8 @@ reg_h = alt.Chart(df).mark_circle().encode(
 charts2 = (huck_height_chart + huck_height_chart_user + reg_h + labels_h).interactive().properties(
     width=1000,
     height=600
+).configure_title(
+    fontSize=24
 )
 
 #display charts
@@ -199,6 +205,10 @@ st.markdown("""
 - **Huck_height:**  
     Huck_height is the height you could drop rider and bike from and all energy be contained in the spring without bottoming out (assumes 60% of weight on rear wheel)
 
+            
+            
+Full calculations here:  https://github.com/wgm20/MTBCoilSpringRateAnalyzer/blob/main/CoilSpringRateComparisons_Streamlit.py 
+            
 Any questions, please email [mulholland.william@gmail.com](mailto:mulholland.william@gmail.com) with the subject: Coil spring rate comparisons.
 
 If this page is of more than fleeting interest, please consider donating to the air ambulance service: [Air Ambulance Donation](https://theairambulanceservice.org.uk)
