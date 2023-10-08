@@ -275,7 +275,10 @@ st.markdown("""
 - **Huck_height:**  
     Huck_height is the height you could drop rider and bike from and all energy be contained in the spring without bottoming out (assumes 60% of weight on rear wheel)
 
-            
+- **Normalised Reach, 183cm Rider:**  
+    Divide the reach of your bike by your height and multiply by 183cm to get a comparable bike reach for a 183cm (6ft) tall rider. This is a good way to compare the reach of different bikes for a given rider height.
+
+                      
             
 Full calculations here:  https://github.com/wgm20/MTBCoilSpringRateAnalyzer/blob/main/CoilSpringRateComparisons_Streamlit.py 
             
