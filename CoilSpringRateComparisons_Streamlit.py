@@ -2,7 +2,7 @@ import matplotlib
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
-import seaborn as sns
+#import seaborn as sns
 from datetime import datetime
 from time import time
 from datetime import timedelta
@@ -75,8 +75,11 @@ user_stroke = st.sidebar.slider("Rear shock stroke (mm)", 20.0, 100.0, 63.0, 0.5
 user_travel = st.sidebar.slider("Rear wheel vertical travel (mm)", 100.0, 250.0, 160.0, 5.0)  # All values are floats
 user_weight = st.sidebar.slider("Rider weight (Kg)", 20.0, 200.0, 80.0, 1.0)  # All values are floats
 user_spring_rate = st.sidebar.slider("Spring_rate lbs/in", 200.0, 800.0, 434.0, 5.0)  # All values are floats
+user_height = st.sidebar.slider("Rider Height", 110.0, 210.0, 183.0, 1.0)  # All values are floats
+user_bike_reach = st.sidebar.slider("Bicycle Reach cm", 300.0, 600.0, 470.0, 5.0)  # All values are floats
 user_speed_rating = st.sidebar.slider("Rider speed, Mens WCDH = 10", 1.0, 10.0, 5.0, 1.0)  # All values are floats
 user_name = st.sidebar.text_input("Name", "Jane Doe")
+
 # Data Preparation and Calculation
 # Your data reading and calculations here...
 
@@ -191,10 +194,77 @@ charts2 = (huck_height_chart + huck_height_chart_user + reg_h + labels_h).intera
     fontSize=24
 )
 
+
+#now do normalised reach:
+df_reach = pd.read_csv("Data_Reach.csv", index_col=1)
+df_reach = df_reach.reset_index()
+df_reach['Reach_Normalised_183'] = df_reach['Reach']*(183/df_reach['Height'])
+
+data_reach = {
+    'Name': [user_name],
+    'Height': [user_height],  
+    'Discipline': ['Entered data'],
+    'Bike': [""],
+    'Reach': [user_bike_reach],
+    'Speed_rating': [user_speed_rating],
+    'Reach_Normalised_183' : [183.0*user_bike_reach/user_height],
+}
+
+df_user_reach = pd.DataFrame(data_reach)
+df_reach_combined = pd.concat([df_reach, df_user_reach])
+
+# Make the chart
+reach_chart = alt.Chart(df_reach, title='Normalised Reach, 183cm Rider').mark_circle().encode(
+    alt.X('Height:Q').scale(zero=False),
+    alt.Y('Reach_Normalised_183:Q').scale(zero=False),
+    color=alt.Color('Discipline:N', scale=alt.Scale(domain=['Enduro', 'DH', 'Entered data', 'best fit line'], range=['blue', 'green', 'red', 'purple'])),
+    size='Speed_rating:Q',
+    tooltip=['Name', 'Bike', 'Speed_rating', 'Discipline']
+).properties(
+    width="container"
+)
+
+reach_chart_user = alt.Chart(df_user_reach, title='Normalised Reach, 183cm Rider').mark_circle().encode(
+    alt.X('Height:Q').scale(zero=False),
+    alt.Y('Reach_Normalised_183:Q').scale(zero=False),
+    color=alt.Color('Discipline:N', scale=alt.Scale(domain=['Enduro', 'DH', 'Entered data', 'best fit line'], range=['blue', 'green', 'red', 'purple'])),
+    size='Speed_rating:Q',
+    tooltip=['Name', 'Bike', 'Speed_rating', 'Discipline']
+).properties(
+    width="container"
+)
+
+labels_r =  alt.Chart(df_reach_combined).mark_text(align='left', baseline='middle', dx=4, fontSize=14).encode(alt.X('Height:Q').scale(zero=False),
+    alt.Y('Reach_Normalised_183:Q').scale(zero=False),
+    text='Name:N')
+
+reg_r = alt.Chart(df_reach, title='Normalised Reach, 183cm Rider').mark_circle().encode(
+    alt.X('Height:Q').scale(zero=False),
+    alt.Y('Reach_Normalised_183:Q').scale(zero=False),
+    color=alt.Color('Discipline:N', scale=alt.Scale(domain=['Enduro', 'DH', 'Entered data', 'best fit line'], range=['blue', 'green', 'red', 'purple'])),
+    size='Speed_rating:Q',
+    tooltip=['Name', 'Bike', 'Speed_rating', 'Discipline']
+).transform_regression('Height', 'Reach_Normalised_183').mark_line(
+     opacity=0.50, 
+     shape='mark'
+).transform_fold(
+     ["best fit line"], 
+     as_=["Regression", "y"]
+).encode(alt.Color("Regression:N"))
+
+
+charts3 = (reach_chart + reach_chart_user + reg_r + labels_r).interactive().properties(
+    width=1000,
+    height=600
+).configure_title(
+    fontSize=24
+)
+
 #display charts
 # Display the chart in the Streamlit app
 st.altair_chart(charts)
 st.altair_chart(charts2)
+st.altair_chart(charts3)
 
 st.markdown("""
 ### Definitions:
