@@ -29,7 +29,7 @@ def huck_height(energy_at_max_travel, weight):
 def add_label(name, spring):
     return name + " " + str(spring) + "lbs/in"
 
-    
+# Calculate required quantities   
 def add_calucated_quantitles(df, normalising_weight, normallising_motion_ratio):
     df['Motion_ratio'] = motion_ratio(df['Travel'], df['Stroke'])
     df['Spring_rate_at_wheel'] = spring_rate_at_wheel(df['Spring_rate'],df['Motion_ratio'])
