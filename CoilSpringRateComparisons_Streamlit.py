@@ -109,14 +109,14 @@ df_combined = pd.concat([df, df_user])
 
 # Make the chart
 points = alt.Chart(df, title='Adjusted spring rate vs Bike Max Travel').mark_circle().encode(
-    alt.X('Travel:Q',axis=alt.Axis(title ='Travel_')).scale(zero=False),
+    alt.X('Travel:Q',axis=alt.Axis(title ='Travel')).scale(zero=False),
     alt.Y('Adjusted_spring_rate:Q', axis=alt.Axis(title ='Adjusted spring rate')).scale(zero=False),
     color=alt.Color('Discipline:N', scale=alt.Scale(domain=['Enduro', 'DH', 'Entered data', 'best fit line'], range=['blue', 'green', 'red', 'purple'])),
     size='Speed_rating:Q',
     tooltip=['Name', 'Weight', 'Spring_rate', 'Speed_rating', 'Discipline'],
 )
 points_user = alt.Chart(df_user, title='Adjusted spring rate vs Bike Max Travel').mark_circle().encode(
-    alt.X('Travel:Q',axis=alt.Axis(title ='Travel_')).scale(zero=False),
+    alt.X('Travel:Q',axis=alt.Axis(title ='Travel')).scale(zero=False),
     alt.Y('Adjusted_spring_rate:Q', axis=alt.Axis(title ='Adjusted spring rate')).scale(zero=False),
     color=alt.Color('Discipline:N', scale=alt.Scale(domain=['Enduro', 'DH', 'Entered data', 'best fit line'], range=['blue', 'green', 'red', 'purple'])),
     tooltip=['Name', 'Weight', 'Spring_rate', 'Speed_rating', 'Discipline'],
@@ -128,7 +128,7 @@ labels =  alt.Chart(df_combined).mark_text(align='left', baseline='middle', dx=4
     text='LabelX:N')
 
 reg = alt.Chart(df).mark_circle().encode(
-    alt.X('Travel:Q',axis=alt.Axis(title ='Travel_')).scale(zero=False),
+    alt.X('Travel:Q',axis=alt.Axis(title ='Travel')).scale(zero=False),
     alt.Y('Adjusted_spring_rate:Q', axis=alt.Axis(title ='Adjusted spring rate')).scale(zero=False),
     color=alt.Color('Discipline:N', scale=alt.Scale(domain=['Enduro', 'DH', 'Entered data', 'best fit line'], range=['blue', 'green', 'red', 'purple'])),
     size='Speed_rating:Q',
@@ -176,7 +176,7 @@ labels_h =  alt.Chart(df_combined).mark_text(align='left', baseline='middle', dx
     text='LabelX:N')
 
 reg_h = alt.Chart(df).mark_circle().encode(
-    alt.X('Travel:Q',axis=alt.Axis(title ='Travel_')).scale(zero=False),
+    alt.X('Travel:Q',axis=alt.Axis(title ='Travel')).scale(zero=False),
     alt.Y('Huck_height_(m):Q', axis=alt.Axis(title ='Huck height (m)')).scale(zero=False),
     color=alt.Color('Discipline:N', scale=alt.Scale(domain=['Enduro', 'DH', 'Entered data', 'best fit line'], range=['blue', 'green', 'red', 'purple'])),
     tooltip=['Name', 'Weight', 'Spring_rate', 'Speed_rating', 'Discipline']
