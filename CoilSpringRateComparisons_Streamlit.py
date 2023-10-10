@@ -80,12 +80,15 @@ user_bike_reach = st.sidebar.slider("Bicycle Reach cm", 300.0, 600.0, 470.0, 5.0
 user_speed_rating = st.sidebar.slider("Rider speed, Mens WCDH = 10", 1.0, 10.0, 5.0, 1.0)  # All values are floats
 user_name = st.sidebar.text_input("Name", "Jane Doe")
 user_motion_ratio = motion_ratio(user_travel, user_stroke)
+speed_rating_include = st.sidebar.slider("Speed rating of riders to exclude from analysis. 1: slowest, 10: pro", 1, 10, 1, 1)  # All values are floats
 
 # Data Preparation and Calculation
 # Your data reading and calculations here...
 
 df = pd.read_csv("Data.csv", index_col=1)
 df = df.reset_index()
+
+df = df[df['Speed_rating'] >= speed_rating_include]
 
 
 data = {
@@ -199,6 +202,7 @@ charts2 = (huck_height_chart + huck_height_chart_user + reg_h + labels_h).intera
 #now do normalised reach:
 df_reach = pd.read_csv("Data_Reach.csv", index_col=1)
 df_reach = df_reach.reset_index()
+df_reach = df_reach[df_reach['Speed_rating'] >= speed_rating_include]
 
 
 data_reach = {
