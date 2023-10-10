@@ -202,6 +202,7 @@ charts2 = (huck_height_chart + huck_height_chart_user + reg_h + labels_h).intera
 #now do normalised reach:
 df_reach = pd.read_csv("Data_Reach.csv", index_col=1)
 df_reach = df_reach.reset_index()
+#filter to selected speed rating
 df_reach = df_reach[df_reach['Speed_rating'] >= speed_rating_include]
 
 
