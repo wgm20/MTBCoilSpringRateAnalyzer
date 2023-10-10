@@ -48,7 +48,7 @@ st.markdown("<h2 style='font-size: 36px; font-family: Helvetica; margin-top: 0;'
 st.write("\n")
 st.markdown("""
 <sub style='font-size: 16px;'>
-Enter your details on the left and change the spring rate until you find an appropriate spring for your mountain bike, travel and weight.
+Enter your details on the left then fiddle with the spring rate and reach until you find the appropriate choices for your height, travel and weight.
 </sub>
 """, unsafe_allow_html=True)
 # Credit
@@ -276,15 +276,16 @@ st.altair_chart(charts3)
 
 st.markdown("""
 ### Definitions:
-            
+
+          
 - **Adjusted_spring_rate**
     This metric adjusts the spring rate of different setups to make them comparable as if the entered rider were using them. By standardizing the setups you can easily compare the stiffness across different rider weights. For instance, if a 90kg rider uses a 500lbs/in spring, this would feel roughly the same as a 75kg rider using a 516lbs/in spring.            
 
 - **Huck_height:**  
-    Huck_height is the height you could drop rider and bike from and all energy be contained in the spring without bottoming out (assumes 60% of weight on rear wheel)
+    Huck_height is the height you could drop rider and bike from and all energy be contained in the spring without bottoming out (assumes 60% of the weight on the rear wheel)
 
 - **Normalised Reach:**  
-    Divide the reach of your bike by height and multiply by the entered rider data height to get a comparable bike reach. This is a good way to compare the reach of different bikes for a given rider height.
+    This divides the reach of the bike by rider height and then multiplies by the entered rider data height to get a comparable bike reach. This is a good way to compare the reach of different bikes for a given rider height.
 
                       
             
