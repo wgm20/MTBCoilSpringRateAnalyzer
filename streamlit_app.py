@@ -80,9 +80,16 @@ user_speed_rating = st.sidebar.slider("Rider speed, Mens WCDH = 10", 1.0, 10.0, 
 user_name = st.sidebar.text_input("Name", "Jane Doe")
 user_motion_ratio = motion_ratio(user_travel, user_stroke)
 
-st.sidebar.markdown("Display options")
-speed_rating_include = st.sidebar.slider("Speed rating of riders to exclude from analysis. 1: slowest, 10: pro", 1, 10, 1, 1)  # All values are floats
-display_normalised_reach = st.sidebar.selectbox("Display reach", ['Normalised', 'Raw'])  # All values are floats
+
+# Adding a visual distinction for the Display options section
+st.sidebar.markdown("""
+    <hr style="height:2px;border:none;color:#333;background-color:#333;" />
+    <h3 style="background-color: #f0f2f6; padding: 10px; border-radius: 5px;">Display options</h3>
+""", unsafe_allow_html=True)
+
+# Display options
+speed_rating_include = st.sidebar.slider("Speed rating of riders to exclude from analysis. 1: slowest, 10: pro", 1, 10, 1, 1)
+display_normalised_reach = st.sidebar.selectbox("Display reach", ['Normalised', 'Raw'])
 
 
 # Data Preparation and Calculation
