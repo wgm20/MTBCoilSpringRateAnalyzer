@@ -65,10 +65,9 @@ st.write("\n")
 st.write("\n")
 
 # User Inputs
-#st.title("Coil Spring Rate Comparisons")
 st.write("\n")
 st.sidebar.markdown("### Setup Analyzer")
-st.sidebar.markdown("Enter your details...")
+st.sidebar.markdown("Enter your setup...")
 
 user_discipline = st.sidebar.selectbox("Discipline", ['Enduro', 'DH'])
 user_stroke = st.sidebar.slider("Rear shock stroke (mm)", 20.0, 100.0, 63.0, 0.5)  # All values are floats
@@ -80,7 +79,11 @@ user_bike_reach = st.sidebar.slider("Bicycle Reach cm", 300.0, 600.0, 470.0, 5.0
 user_speed_rating = st.sidebar.slider("Rider speed, Mens WCDH = 10", 1.0, 10.0, 5.0, 1.0)  # All values are floats
 user_name = st.sidebar.text_input("Name", "Jane Doe")
 user_motion_ratio = motion_ratio(user_travel, user_stroke)
+
+st.sidebar.markdown("Display options")
 speed_rating_include = st.sidebar.slider("Speed rating of riders to exclude from analysis. 1: slowest, 10: pro", 1, 10, 1, 1)  # All values are floats
+display_normalised_reach = st.sidebar.selectbox("Display reach", ['Normalised', 'Raw'])  # All values are floats
+
 
 # Data Preparation and Calculation
 # Your data reading and calculations here...
@@ -202,7 +205,7 @@ charts2 = (huck_height_chart + huck_height_chart_user + reg_h + labels_h).intera
 #now do normalised reach:
 df_reach = pd.read_csv("Data_Reach.csv", index_col=1)
 df_reach = df_reach.reset_index()
-#filter to selected speed rating
+#filter to the selected speed rating
 df_reach = df_reach[df_reach['Speed_rating'] >= speed_rating_include]
 
 
@@ -222,9 +225,12 @@ df_user_reach = pd.DataFrame(data_reach)
 df_reach_combined = pd.concat([df_reach, df_user_reach])
 
 # Make the chart
-reach_chart = alt.Chart(df_reach, title='Normalised Reach').mark_circle().encode(
+y_axis_encoding = 'Reach_Normalised:Q' if display_normalised_reach == 'Normalized' else 'Reach:Q'
+reach_title = 'Normalized Reach' if display_normalised_reach == 'Normalized' else 'Unnormalized Reach'
+
+reach_chart = alt.Chart(df_reach, title=reach_title).mark_circle().encode(
     alt.X('Height:Q').scale(zero=False),
-    alt.Y('Reach_Normalised:Q').scale(zero=False),
+    alt.Y(y_axis_encoding).scale(zero=False),
     color=alt.Color('Discipline:N', scale=alt.Scale(domain=['Enduro', 'DH', 'Entered data', 'best fit line'], range=['blue', 'green', 'red', 'purple'])),
     size='Speed_rating:Q',
     tooltip=['Name', 'Bike', 'Speed_rating', 'Discipline']
@@ -232,9 +238,9 @@ reach_chart = alt.Chart(df_reach, title='Normalised Reach').mark_circle().encode
     width="container"
 )
 
-reach_chart_user = alt.Chart(df_user_reach, title='Normalised Reach').mark_circle().encode(
+reach_chart_user = alt.Chart(df_user_reach, title=reach_title).mark_circle().encode(
     alt.X('Height:Q').scale(zero=False),
-    alt.Y('Reach_Normalised:Q').scale(zero=False),
+    alt.Y(y_axis_encoding).scale(zero=False),
     color=alt.Color('Discipline:N', scale=alt.Scale(domain=['Enduro', 'DH', 'Entered data', 'best fit line'], range=['blue', 'green', 'red', 'purple'])),
     size='Speed_rating:Q',
     tooltip=['Name', 'Bike', 'Speed_rating', 'Discipline']
@@ -248,7 +254,7 @@ labels_r =  alt.Chart(df_reach_combined).mark_text(align='left', baseline='middl
 
 reg_r = alt.Chart(df_reach, title='Normalised Reach').mark_circle().encode(
     alt.X('Height:Q').scale(zero=False),
-    alt.Y('Reach_Normalised:Q').scale(zero=False),
+    alt.Y(y_axis_encoding).scale(zero=False),
     color=alt.Color('Discipline:N', scale=alt.Scale(domain=['Enduro', 'DH', 'Entered data', 'best fit line'], range=['blue', 'green', 'red', 'purple'])),
     size='Speed_rating:Q',
     tooltip=['Name', 'Bike', 'Speed_rating', 'Discipline']
