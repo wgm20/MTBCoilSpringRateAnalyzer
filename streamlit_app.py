@@ -225,8 +225,9 @@ df_user_reach = pd.DataFrame(data_reach)
 df_reach_combined = pd.concat([df_reach, df_user_reach])
 
 # Make the chart
-y_axis_encoding = 'Reach_Normalised:Q' if display_normalised_reach == 'Normalized' else 'Reach:Q'
-reach_title = 'Normalized Reach' if display_normalised_reach == 'Normalized' else 'Unnormalized Reach'
+y_axis_encoding = 'Reach_Normalised:Q' if display_normalised_reach == 'Normalised' else 'Reach:Q'
+y_regression_target = 'Reach_Normalised' if display_normalised_reach == 'Normalised' else 'Reach'
+reach_title = 'Normalised Reach' if display_normalised_reach == 'Normalised' else 'Reach'
 
 reach_chart = alt.Chart(df_reach, title=reach_title).mark_circle().encode(
     alt.X('Height:Q').scale(zero=False),
@@ -249,16 +250,16 @@ reach_chart_user = alt.Chart(df_user_reach, title=reach_title).mark_circle().enc
 )
 
 labels_r =  alt.Chart(df_reach_combined).mark_text(align='left', baseline='middle', dx=4, fontSize=14).encode(alt.X('Height:Q').scale(zero=False),
-    alt.Y('Reach_Normalised:Q').scale(zero=False),
+    alt.Y(y_axis_encoding).scale(zero=False),
     text='Name:N')
 
-reg_r = alt.Chart(df_reach, title='Normalised Reach').mark_circle().encode(
+reg_r = alt.Chart(df_reach, title=reach_title).mark_circle().encode(
     alt.X('Height:Q').scale(zero=False),
     alt.Y(y_axis_encoding).scale(zero=False),
     color=alt.Color('Discipline:N', scale=alt.Scale(domain=['Enduro', 'DH', 'Entered data', 'best fit line'], range=['blue', 'green', 'red', 'purple'])),
     size='Speed_rating:Q',
     tooltip=['Name', 'Bike', 'Speed_rating', 'Discipline']
-).transform_regression('Height', 'Reach_Normalised').mark_line(
+).transform_regression('Height', y_regression_target).mark_line(
      opacity=0.50, 
      shape='mark'
 ).transform_fold(
