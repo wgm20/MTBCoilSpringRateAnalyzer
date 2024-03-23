@@ -74,8 +74,8 @@ user_stroke = st.sidebar.slider("Rear shock stroke (mm)", 20.0, 100.0, 63.0, 0.5
 user_travel = st.sidebar.slider("Rear wheel vertical travel (mm)", 100.0, 250.0, 160.0, 5.0)  # All values are floats
 user_weight = st.sidebar.slider("Rider weight (Kg)", 20.0, 200.0, 80.0, 1.0)  # All values are floats
 user_spring_rate = st.sidebar.slider("Spring_rate lbs/in", 200.0, 800.0, 434.0, 5.0)  # All values are floats
-user_height = st.sidebar.slider("Rider Height", 110.0, 210.0, 183.0, 1.0)  # All values are floats
-user_bike_reach = st.sidebar.slider("Bicycle Reach cm", 300.0, 600.0, 470.0, 5.0)  # All values are floats
+user_height = st.sidebar.slider("Rider Height (cm)", 110.0, 210.0, 183.0, 1.0)  # All values are floats
+user_bike_reach = st.sidebar.slider("Bicycle Reach (mm)", 300.0, 600.0, 470.0, 5.0)  # All values are floats
 user_speed_rating = st.sidebar.slider("Rider speed, Mens WCDH = 10", 1.0, 10.0, 5.0, 1.0)  # All values are floats
 user_name = st.sidebar.text_input("Name", "Jane Doe")
 user_motion_ratio = motion_ratio(user_travel, user_stroke)
@@ -234,11 +234,11 @@ df_reach_combined = pd.concat([df_reach, df_user_reach])
 # Make the chart
 y_axis_encoding = 'Reach_Normalised:Q' if display_normalised_reach == 'Normalised' else 'Reach:Q'
 y_regression_target = 'Reach_Normalised' if display_normalised_reach == 'Normalised' else 'Reach'
-reach_title = 'Normalised Reach' if display_normalised_reach == 'Normalised' else 'Reach'
+reach_title = 'Normalised Reach (mm)' if display_normalised_reach == 'Normalised' else 'Reach (mm)'
 
 reach_chart = alt.Chart(df_reach, title=reach_title).mark_circle().encode(
-    alt.X('Height:Q').scale(zero=False),
-    alt.Y(y_axis_encoding).scale(zero=False),
+    alt.X('Height:Q', axis=alt.Axis(title ='Rider Height (cm)')).scale(zero=False),  
+    alt.Y(y_axis_encoding, axis=alt.Axis(title =' Reach (mm)')).scale(zero=False),
     color=alt.Color('Discipline:N', scale=alt.Scale(domain=['Enduro', 'DH', 'Entered data', 'best fit line'], range=['blue', 'green', 'red', 'purple'])),
     size='Speed_rating:Q',
     tooltip=['Name', 'Bike', 'Speed_rating', 'Discipline']
