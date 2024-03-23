@@ -89,7 +89,7 @@ st.sidebar.markdown("""
 
 # Display options
 speed_rating_include = st.sidebar.slider("Speed rating of riders to exclude from analysis. 1: slowest, 10: pro", 1, 10, 1, 1)
-display_normalised_reach = st.sidebar.selectbox("Display reach", ['Normalised', 'Raw'])
+display_normalised_reach = st.sidebar.selectbox("Display reach", [ 'Raw', 'Normalised'])
 
 
 # Data Preparation and Calculation
