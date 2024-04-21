@@ -38,7 +38,7 @@ def add_label(name, spring):
 def add_calucated_quantitles(df, normalising_rider_weight, bike_weight, normallising_motion_ratio):
     df['Motion_ratio'] = motion_ratio(df['Travel'], df['Stroke'])
     df['Spring_rate_at_wheel'] = spring_rate_at_wheel(df['Spring_rate'],df['Motion_ratio'])
-    df['Spring_rate_at_wheel_normalised_75kg'] = spring_rate_at_wheel_normlaised_75kg(df['Spring_rate_at_wheel'],(df['Weight'] + unsprung_mass_proportion_of_bike_weight * bike_weight)
+    df['Spring_rate_at_wheel_normalised_75kg'] = spring_rate_at_wheel_normlaised_75kg(df['Spring_rate_at_wheel'],(df['Weight'] + unsprung_mass_proportion_of_bike_weight * bike_weight))
     df['Energy_at_max_travel'] = energy_at_max_travel(df['Spring_rate'], df['Stroke'])
     df['Huck_height_(m)'] = huck_height(df['Energy_at_max_travel'], (df['Weight'] + unsprung_mass_proportion_of_bike_weight * bike_weight))
     df['LabelX'] = np.vectorize(add_label)(df['Name'], df['Spring_rate'])
