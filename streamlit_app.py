@@ -42,7 +42,7 @@ def add_calucated_quantitles(df, normalising_rider_weight, bike_weight, normalli
     df['Energy_at_max_travel'] = energy_at_max_travel(df['Spring_rate'], df['Stroke'])
     df['Huck_height_(m)'] = huck_height(df['Energy_at_max_travel'], (df['Weight'] + unsprung_mass_proportion_of_bike_weight * bike_weight))
     df['LabelX'] = np.vectorize(add_label)(df['Name'], df['Spring_rate'])
-    df['Adjusted_spring_rate'] = df['Spring_rate_at_wheel_normalised_75kg']*((normalising_rider_weight + bike_weight*unsprung_mass_proportion_of_bike_weight)/(default_system_sprung_mass)*normallising_motion_ratio**2
+    df['Adjusted_spring_rate'] = df['Spring_rate_at_wheel_normalised_75kg']*((normalising_rider_weight + bike_weight*unsprung_mass_proportion_of_bike_weight)/(default_system_sprung_mass)*normallising_motion_ratio**2)
 
 # Title
 st.markdown("<h1 style='font-size: 60px; font-family: Helvetica; font-weight: bold; margin-bottom: 0;'>Setup Analyzer</h1>", unsafe_allow_html=True)
