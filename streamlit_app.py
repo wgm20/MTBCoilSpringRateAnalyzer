@@ -11,8 +11,9 @@ import altair as alt
 import streamlit as st
 
 #constants 
-default_bike_weight = 16.0 #kg 
-unsprung_mass_proportion_of_bike_weight = 0.25 # wheels tyres, cassette half swingarm, half fork. 
+default_bike_weight = 17.0 #kg 
+sprung_mass_proportion_of_bike_weight = 0.75 # wheels tyres, cassette half swingarm, half fork. 
+default_system_sprung_mass = default_bike_weight*sprung_mass_proportion_of_bike_weight + 75 #bike + rider
 
 #functions
 def motion_ratio(travel, stroke):
@@ -21,8 +22,8 @@ def motion_ratio(travel, stroke):
 def spring_rate_at_wheel(spring, motion_ratio):
     return spring/(motion_ratio**2)
 
-def spring_rate_at_wheel_normlaised_75kg(spring_rate_at_wheel, weight):
-    return spring_rate_at_wheel*(75 + unsprung_mass_proportion_of_bike_weight*default_bike_weight) /weight
+def spring_rate_at_wheel_normlaised_75kg(spring_rate_at_wheel, system_weight):
+    return spring_rate_at_wheel*(default_system_sprung_mass) /system_weight
 
 def energy_at_max_travel(spring_rate, shock_stroke):
     return 0.5*(spring_rate*175.126835)*((shock_stroke/1000)**2)
@@ -41,7 +42,7 @@ def add_calucated_quantitles(df, normalising_rider_weight, bike_weight, normalli
     df['Energy_at_max_travel'] = energy_at_max_travel(df['Spring_rate'], df['Stroke'])
     df['Huck_height_(m)'] = huck_height(df['Energy_at_max_travel'], (df['Weight'] + unsprung_mass_proportion_of_bike_weight * bike_weight))
     df['LabelX'] = np.vectorize(add_label)(df['Name'], df['Spring_rate'])
-    df['Adjusted_spring_rate'] = df['Spring_rate_at_wheel_normalised_75kg']*((normalising_weight + bike_weight*unsprung_mass_proportion_of_bike_weight)/(75+ unsprung_mass_proportion_of_bike_weight*default_bike_weight)*normallising_motion_ratio**2
+    df['Adjusted_spring_rate'] = df['Spring_rate_at_wheel_normalised_75kg']*((normalising_rider_weight + bike_weight*unsprung_mass_proportion_of_bike_weight)/(default_system_sprung_mass)*normallising_motion_ratio**2
 
 # Title
 st.markdown("<h1 style='font-size: 60px; font-family: Helvetica; font-weight: bold; margin-bottom: 0;'>Setup Analyzer</h1>", unsafe_allow_html=True)
