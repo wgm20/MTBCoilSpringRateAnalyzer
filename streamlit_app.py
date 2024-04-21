@@ -10,6 +10,10 @@ import warnings
 import altair as alt
 import streamlit as st
 
+#constants 
+default_bike_weight = 16.0 #kg 
+unsprung_mass_proportion_of_bike_weight = 0.25 # wheels tyres, cassette half swingarm, half fork. 
+
 #functions
 def motion_ratio(travel, stroke):
     return travel/stroke
@@ -18,7 +22,7 @@ def spring_rate_at_wheel(spring, motion_ratio):
     return spring/(motion_ratio**2)
 
 def spring_rate_at_wheel_normlaised_75kg(spring_rate_at_wheel, weight):
-    return spring_rate_at_wheel*75/weight
+    return spring_rate_at_wheel*(75 + unsprung_mass_proportion_of_bike_weight*default_bike_weight) /weight
 
 def energy_at_max_travel(spring_rate, shock_stroke):
     return 0.5*(spring_rate*175.126835)*((shock_stroke/1000)**2)
@@ -30,15 +34,14 @@ def add_label(name, spring):
     return name + " " + str(spring) + "lbs/in"
 
 # Calculate required quantities   
-def add_calucated_quantitles(df, normalising_weight, normallising_motion_ratio):
+def add_calucated_quantitles(df, normalising_rider_weight, bike_weight, normallising_motion_ratio):
     df['Motion_ratio'] = motion_ratio(df['Travel'], df['Stroke'])
     df['Spring_rate_at_wheel'] = spring_rate_at_wheel(df['Spring_rate'],df['Motion_ratio'])
-    df['Spring_rate_at_wheel_normalised_75kg'] = spring_rate_at_wheel_normlaised_75kg(df['Spring_rate_at_wheel'],df['Weight'])
+    df['Spring_rate_at_wheel_normalised_75kg'] = spring_rate_at_wheel_normlaised_75kg(df['Spring_rate_at_wheel'],(df['Weight'] + unsprung_mass_proportion_of_bike_weight * bike_weight)
     df['Energy_at_max_travel'] = energy_at_max_travel(df['Spring_rate'], df['Stroke'])
-    df['Huck_height_(m)'] = huck_height(df['Energy_at_max_travel'], df['Weight'])
+    df['Huck_height_(m)'] = huck_height(df['Energy_at_max_travel'], (df['Weight'] + unsprung_mass_proportion_of_bike_weight * bike_weight))
     df['LabelX'] = np.vectorize(add_label)(df['Name'], df['Spring_rate'])
-    df['Adjusted_spring_rate'] = df['Spring_rate_at_wheel_normalised_75kg']*(normalising_weight/75)*normallising_motion_ratio**2
-
+    df['Adjusted_spring_rate'] = df['Spring_rate_at_wheel_normalised_75kg']*((normalising_weight + bike_weight*unsprung_mass_proportion_of_bike_weight)/(75+ unsprung_mass_proportion_of_bike_weight*default_bike_weight)*normallising_motion_ratio**2
 
 # Title
 st.markdown("<h1 style='font-size: 60px; font-family: Helvetica; font-weight: bold; margin-bottom: 0;'>Setup Analyzer</h1>", unsafe_allow_html=True)
@@ -73,6 +76,7 @@ user_discipline = st.sidebar.selectbox("Discipline", ['Enduro', 'DH'])
 user_stroke = st.sidebar.slider("Rear shock stroke (mm)", 20.0, 100.0, 63.0, 0.5)  # All values are floats
 user_travel = st.sidebar.slider("Rear wheel vertical travel (mm)", 100.0, 250.0, 160.0, 5.0)  # All values are floats
 user_weight = st.sidebar.slider("Rider weight (Kg)", 20.0, 200.0, 80.0, 1.0)  # All values are floats
+user_bike_weight = st.sidebar.slider("Bike weight (Kg)", 5.0, 30.0, default_bike_weight, 1.0)  # All values are floats
 user_spring_rate = st.sidebar.slider("Spring_rate lbs/in", 200.0, 800.0, 434.0, 5.0)  # All values are floats
 user_height = st.sidebar.slider("Rider Height (cm)", 110.0, 210.0, 183.0, 1.0)  # All values are floats
 user_bike_reach = st.sidebar.slider("Bicycle Reach (mm)", 300.0, 600.0, 470.0, 5.0)  # All values are floats
@@ -109,11 +113,12 @@ data = {
     'Spring_rate': [user_spring_rate],
     'Weight': [user_weight],
     'Speed_rating': [user_speed_rating],
+    
 }
 
 df_user = pd.DataFrame(data)
-add_calucated_quantitles(df, user_weight, user_motion_ratio)
-add_calucated_quantitles(df_user, user_weight, user_motion_ratio)
+add_calucated_quantitles(df, user_weight, default_bike_weight, user_motion_ratio)
+add_calucated_quantitles(df_user, user_weight, user_bike_weight, user_motion_ratio)
 df_user['plot_point_size'] = 3
 df['plot_point_size'] = 2
 df_combined = pd.concat([df, df_user])
