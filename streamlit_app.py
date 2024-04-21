@@ -74,13 +74,13 @@ st.sidebar.markdown("### Setup Analyzer")
 st.sidebar.markdown("Enter your setup...")
 
 user_discipline = st.sidebar.selectbox("Discipline", ['Enduro', 'DH'])
-user_stroke = st.sidebar.slider("Rear shock stroke (mm)", 20.0, 100.0, 63.0, 0.5)  # All values are floats
+user_stroke = st.sidebar.slider("Rear shock stroke (mm)", 20.0, 100.0, 65.0, 0.5)  # All values are floats
 user_travel = st.sidebar.slider("Rear wheel vertical travel (mm)", 100.0, 250.0, 160.0, 5.0)  # All values are floats
-user_weight = st.sidebar.slider("Rider weight (Kg)", 20.0, 200.0, 80.0, 1.0)  # All values are floats
+user_weight = st.sidebar.slider("Rider weight (Kg)", 20.0, 200.0, 78.0, 1.0)  # All values are floats
 user_bike_weight = st.sidebar.slider("Bike weight (Kg)", 5.0, 30.0, default_bike_weight, 1.0)  # All values are floats
 user_spring_rate = st.sidebar.slider("Spring_rate lbs/in", 200.0, 800.0, 434.0, 5.0)  # All values are floats
-user_height = st.sidebar.slider("Rider Height (cm)", 110.0, 210.0, 183.0, 1.0)  # All values are floats
-user_bike_reach = st.sidebar.slider("Bicycle Reach (mm)", 300.0, 600.0, 470.0, 5.0)  # All values are floats
+user_height = st.sidebar.slider("Rider Height (cm)", 110.0, 210.0, 181.0, 1.0)  # All values are floats
+user_bike_reach = st.sidebar.slider("Bicycle Reach (mm)", 300.0, 600.0, 480.0, 5.0)  # All values are floats
 user_speed_rating = st.sidebar.slider("Rider speed, Mens WCDH = 10", 1.0, 10.0, 5.0, 1.0)  # All values are floats
 user_name = st.sidebar.text_input("Name", "Jane Doe")
 user_motion_ratio = motion_ratio(user_travel, user_stroke)
