@@ -14,7 +14,7 @@ import streamlit as st
 default_bike_weight = 17.0 #kg 
 sprung_mass_proportion_of_bike_weight = 0.75 # wheels tyres, cassette half swingarm, half fork. 
 default_system_sprung_mass = default_bike_weight*sprung_mass_proportion_of_bike_weight + 75 #bike + rider
-
+default_weight_distribution_on_rear_wheel = 0.55
 #functions
 def motion_ratio(travel, stroke):
     return travel/stroke
@@ -29,7 +29,7 @@ def energy_at_max_travel(spring_rate, shock_stroke):
     return 0.5*(spring_rate*175.126835)*((shock_stroke/1000)**2)
 
 def huck_height(energy_at_max_travel, weight):
-    return energy_at_max_travel/(0.6*weight*9.81)
+    return energy_at_max_travel/(default_weight_distribution_on_rear_wheel*weight*9.81)
 
 def add_label(name, spring):
     return name + " " + str(spring) + "lbs/in"
@@ -38,7 +38,7 @@ def add_label(name, spring):
 def add_calucated_quantitles(df, normalising_rider_weight, bike_weight, normallising_motion_ratio):
     df['Motion_ratio'] = motion_ratio(df['Travel'], df['Stroke'])
     df['Spring_rate_at_wheel'] = spring_rate_at_wheel(df['Spring_rate'],df['Motion_ratio'])
-    df['Spring_rate_at_wheel_normalised_75kg'] = spring_rate_at_wheel_normlaised_75kg(df['Spring_rate_at_wheel'],(df['Weight'] + sprung_mass_proportion_of_bike_weight  * bike_weight))
+    df['Spring_rate_at_wheel_normalised_75kg'] = spring_rate_at_wheel_normlaised_75kg(df['Spring_rate_at_wheel'],(df['Weight'] + sprung_mass_proportion_of_bike_weight * bike_weight))
     df['Energy_at_max_travel'] = energy_at_max_travel(df['Spring_rate'], df['Stroke'])
     df['Huck_height_(m)'] = huck_height(df['Energy_at_max_travel'], (df['Weight'] + sprung_mass_proportion_of_bike_weight  * bike_weight))
     df['LabelX'] = np.vectorize(add_label)(df['Name'], df['Spring_rate'])
